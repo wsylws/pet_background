@@ -18,7 +18,7 @@
       <el-table-column prop="phone" label="手机号"></el-table-column>
       <el-table-column label="操作" width="160px">
         <template slot-scope="scope">
-          <el-button size="mini" @click="handleEdit(scope.row.id), isEdit = true">编辑</el-button>
+         <!--  <el-button size="mini" @click="handleEdit(scope.row.id), isEdit = true">编辑</el-button> -->
           <el-button size="mini" type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>

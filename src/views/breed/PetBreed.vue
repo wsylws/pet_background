@@ -4,7 +4,10 @@
       <el-form-item prop="breed">
         <el-input v-model="searchMap.breed" placeholder="宠物品种"></el-input>
       </el-form-item>
-      
+      <el-form-item prop="category">
+        <el-input v-model="searchMap.category" placeholder="分类"></el-input>
+      </el-form-item>
+
       <el-form-item>
         <el-button type="primary" icon="el-icon-edit" @click="fetchData()">查询</el-button>
         <el-button type="primary" icon="el-icon-plus" @click="openAdd(), isEdit = false">新增</el-button>
@@ -14,6 +17,7 @@
     <el-table :data="list" height="579px" border style="width: 50%; margin: 0 auto;">
       <el-table-column type="index" label="序号" width="200px"></el-table-column>
       <el-table-column prop="breed_name" label="宠物品种"></el-table-column>
+      <el-table-column prop="category" label="分类"></el-table-column>
       <el-table-column label="操作" width="160px">
         <template slot-scope="scope">
           <el-button size="mini" @click="handleEdit(scope.row.id), isEdit = true">编辑</el-button>
@@ -49,6 +53,9 @@
       >
         <el-form-item label="宠物品种" prop="breed_name">
           <el-input v-model="pojo.breed_name"></el-input>
+        </el-form-item>
+        <el-form-item label="分类" prop="category">
+          <el-input v-model="pojo.category"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -92,11 +99,13 @@ export default {
       pageSize: 10,
       searchMap: {
         breed: "",
+        category: ""
       },
       roleIds: [],
       pojo: {
         id: "",
-        breed_name: ''
+        breed_name: '',
+        category: ''
       },
       rules: {
         breed_name: [{required: true, message: '宠物品种不能为空', trigger: 'blur'}, {validator: checkBreed, trigger: "blur" }]

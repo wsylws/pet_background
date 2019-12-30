@@ -84,6 +84,7 @@ export default {
           }
       });
     },
+    // 删除用户
     handleDelete(username) {
       this.$confirm("确认删除这条记录吗？", "提示", {
         confirmButtonText: "确定",
@@ -107,6 +108,7 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
+    // 重置密码
     reset(username) {
         this.$confirm('此操作将重置该用户密码为‘123456’, 是否继续?', '提示', {
           confirmButtonText: '确定',

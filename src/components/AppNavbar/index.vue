@@ -1,7 +1,7 @@
 <template>
   <div class="navbar">
     <el-menu
-      :default-active="$route.path"
+      :default-active="$route.meta.module"
       class="el-menu-vertical-demo"
       background-color="#304155"
       text-color="#fff"

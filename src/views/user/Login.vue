@@ -46,7 +46,7 @@ export default {
         username: '',
         password: '',
         imageCode: '',
-        validateCode: '',
+        // validateCode: '',
       },
       rules: {
         username: [

@@ -43,7 +43,7 @@ import md5 from 'md5'
 export default {
   data() {
     const validateOldPass = (rule, value, callback) => {
-      checkPwd({id: this.id, password: md5(value)}).then(res => {
+      checkPwd({username: this.username, password: md5(value)}).then(res => {
         const resData = res.data
         if (resData.flag) {
           callback()
@@ -111,17 +111,22 @@ export default {
         this.$refs['ruleForm'].resetFields()
       })
     },
+    // 提交表单
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          updatePwd({id: this.id, password: md5(this.ruleForm.pass)}).then(res => {
+          // 修改密码
+          updatePwd({username: this.username, password: md5(this.ruleForm.pass)}).then(res => {
             const resData = res.data
             this.$message({
               message: resData.msg,
               type: resData.flag ? 'success' : 'warning'
             })
+            // 修改成功
             if (resData.flag) {
+              // 退出登录
               this.handleLogout()
+              // 弹出框消失
               this.dialogFormVisible = false
             }
           })

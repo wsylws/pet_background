@@ -8,7 +8,7 @@
         <el-input v-model="searchMap.username" placeholder="发布人"></el-input>
       </el-form-item>
       <el-form-item prop="status">
-        <el-select v-model="searchMap.status" placeholder="请选择">
+        <el-select v-model="searchMap.status" placeholder="领养状态">
           <el-option
             v-for="item in statusOptions"
             :key="item.value"
@@ -26,12 +26,29 @@
       <el-table-column type="index" label="序号" width="60px"></el-table-column>
       <el-table-column prop="title" label="标题"></el-table-column>
       <el-table-column prop="pet_desc" label="宠物描述"></el-table-column>
-      <el-table-column prop="status" label="领养状态"></el-table-column>
-      <el-table-column prop="breed" label="宠物品种"></el-table-column>
-      <el-table-column prop="city" label="城市"></el-table-column>
+      <el-table-column prop="status" label="领养状态">
+        <template slot-scope="scope">
+          <span>{{scope.row.status == 0 ? '待领养' : '已领养'}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="breed" label="宠物品种">
+        <template slot-scope="scope">
+          {{scope.row.breed}}<span v-if="scope.row.breed_name">/{{scope.row.breed_name}}</span>
+         </template>
+      </el-table-column>
+      <el-table-column prop="city" label="城市">
+        <template slot-scope="scope">
+          <span>{{scope.row.province}}{{scope.row.city}}{{scope.row.county}}</span>
+        </template>
+      </el-table-column>
       <el-table-column prop="telephone" label="联系方式"></el-table-column>
-      <el-table-column prop="create_time" label="发布时间"></el-table-column>
+      <el-table-column prop="create_time" label="发布时间"  width="160px"></el-table-column>
       <el-table-column prop="username" label="发布人"></el-table-column>
+      <el-table-column prop="send_check" label="审核">
+        <template slot-scope="scope">
+          <span>{{scope.row.send_check == 0 ? '待审核' : '已审核'}}</span>
+        </template>
+      </el-table-column>
       <el-table-column prop="comment_num" label="评论" width="80px">
         <template slot-scope="scope">
           <router-link tag="a" :to="'/petAdopt-manage/comment/' + scope.row.id" class="table-link">详情</router-link>
@@ -87,6 +104,16 @@
             </el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="审核" prop="send_check">
+          <el-switch
+            class="check-switch"
+            v-model="pojo.send_check"
+            active-value=1
+            inactive-value=0
+            active-color="#13ce66"
+            inactive-color="#ff4949">
+          </el-switch>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -109,6 +136,13 @@ export default {
       callback()
     }
     return {
+      checkOptions: [{
+        value: '0',
+        label: '待审核'
+      }, {
+        value: '1',
+        label: '已审核'
+      }],
       statusOptions: [{
         value: '0',
         label: '待领养'
@@ -123,14 +157,16 @@ export default {
       searchMap: {
         username: "",
         title: '',
-        status: '',
+        status: ''
+        
       },
       roleIds: [],
       pojo: {
         id: "",
         username: "",
         email: '',
-        phone: ""
+        phone: "",
+        send_check: ''
       },
       isEdit: false,
       dialogFormVisible: false,
@@ -160,10 +196,6 @@ export default {
             const resData = res.data;
             this.total = resData.data.total[0].count;
             this.list = resData.data.data;
-            for(let i = 0; i < this.list.length; i++) {
-              this.list[i].city = this.list[i].province + ( '/' + this.list[i].city == '/全部' ? '' : '/'+ this.list[i].city) + ('/' + this.list[i].county == '/全部' ? '' :  '/' +this.list[i].county)
-              this.list[i].status = this.list[i].status == '0' ? '待领养' : '已领养'
-            } 
           }
       });
     },
@@ -241,7 +273,9 @@ export default {
   color: rgb(109, 143, 177);
   text-decoration: none;
 }
-
+.check-switch {
+  margin-right: 250px;
+}
 </style>
 
 <style>
